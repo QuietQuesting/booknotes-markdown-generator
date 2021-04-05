@@ -3,7 +3,7 @@
 def get_sections():
     """ Asks for all the sections of the book one after the other.
         Confirms if the user entered the right amount of sections,
-        in case he didn't get_sections calls itself for another try ( recursion) """ 
+        in case he didn't get_sections calls itself for another try (recursive) """ 
 
     sections = []
 
@@ -11,12 +11,11 @@ def get_sections():
 
     current_section = input("Erste Kapitelnamen eingeben: ")
 
-
     while current_section != "":
         sections.append(current_section)
         current_section = input("Enter next chapter name: ")
 
-    choice = input(f"You have entered {len(sections)} Chapters. In case that's correct press only enter.")
+    choice = input(f"You have entered {len(sections)} Chapters. In case that's right press just enter.")
     if choice != "":
         sections = get_sections()
 
@@ -30,7 +29,7 @@ def build_file_content(title, name, sections):
         title: title of the book: str, name: author name: str,
         sections: sectios of the book: list[str] """
 
-    file_content = [f'# My notes for the book "{title}" of {name}\n', '### Contents:\n']
+    file_content = [f'# My notes for the book "{title}" of {name}\n', '### Table of Contents:\n']
 
     for num in range(1, len(sections)+1):
         section = sections[num-1]
@@ -56,10 +55,10 @@ def write_content_to_file(title, content):
 def main():
     """ Main flow of the script. """
 
-    print("Buchnotizen - markdown - Datei generator.!")
+    print("Booknotes - markdown - file - generator.!")
 
     book_title = input("Enter booktitle: ")
-    author_name = input("Enter Authorname: ")
+    author_name = input("Enter authorname: ")
 
     book_sections = get_sections()
 
