@@ -7,9 +7,9 @@ def get_sections():
 
     sections = []
 
-    print("\nPress only Enter to stop entering Chapters.\n")
+    print("\nJust press Enter to stop entering Chapters.\n")
 
-    current_section = input("Erste Kapitelnamen eingeben: ")
+    current_section = input("Enter first chapter name: ")
 
     while current_section != "":
         sections.append(current_section)
