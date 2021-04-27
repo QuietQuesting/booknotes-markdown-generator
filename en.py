@@ -33,7 +33,7 @@ def build_file_content(title, name, sections):
 
     for num in range(1, len(sections)+1):
         section = sections[num-1]
-        file_content.extend(f"{num}. [{section}](#{num}. {section})", "\n")
+        file_content.append(f"{num}. [{section}](#{num}. {section} "\n")
 
     for _ in range(2):
         file_content.append("\n")
