@@ -1,5 +1,34 @@
 # Book notes markdown generator
 
+import gettext
+supported_languages = "en", "de"
+
+def get_locale():
+    """ Try to read lang from file. """
+    try:
+        with open("lang.txt") as file:
+            lang = file.read().lower()
+
+        if lang in supported_languages:
+            return lang
+        return None
+
+    except FileNotFoundError:
+        return None
+
+
+def set_locale():
+    """ Writes lang to file. """
+    choice = input("Choose a language: ")
+    while choice not in supported_languages:
+        choice = input(f"Supported languages: {supported_languages}").lower()
+
+    with open("lang.txt", "w") as file:
+        file.write(choice)
+    return choice
+
+NOTES_TRANSLATION = _("notes")
+
 def get_sections():
     """ Asks for all the sections of the book one after the other.
         Confirms if the user entered the right amount of sections,
@@ -7,15 +36,15 @@ def get_sections():
 
     sections = []
 
-    print("\nJust press Enter to stop entering Chapters.\n")
+    print("\n" + _("Just press Enter to stop entering Chapters.") +"\n")
 
-    current_section = input("Enter first chapter name: ")
+    current_section = input(_("Enter first chapter name: "))
 
     while current_section != "":
         sections.append(current_section)
-        current_section = input("Enter next chapter name: ")
+        current_section = input(_("Enter next chapter name: "))
 
-    choice = input(f"You have entered {len(sections)} Chapters. In case that's right press just enter.")
+    choice = input(_(f"You have entered {len(sections)} Chapters. In case that's right press just enter."))
     if choice != "":
         sections = get_sections()
 
@@ -29,11 +58,12 @@ def build_file_content(title, name, sections):
         title: title of the book: str, name: author name: str,
         sections: sectios of the book: list[str] """
 
-    file_content = [f'# My notes for the book "{title}" of {name}\n', '### Table of Contents:\n']
+    file_content = [_('# My notes for the book') + title + _('of') + name]
+    file_content.append('\n### Table of Contents:\n')
 
     for num in range(1, len(sections)+1):
         section = sections[num-1]
-        file_content.append(f"{num}. [{section}](#{num}. {section} "\n")
+        file_content.append(f"{num}. [{section}](#{num}. {section} \n")
 
     for _ in range(2):
         file_content.append("\n")
@@ -48,17 +78,23 @@ def write_content_to_file(title, content):
     """ Writes the given content to a markdown file
         title: str, content: list[str] """
 
-    with open(f"{title} Notizen.md", "w", ) as file:
+    with open(f"{title} {NOTES_TRANSLATION}.md", "w", ) as file:
         file.writelines(content)
 
 
 def main():
     """ Main flow of the script. """
 
-    print("Booknotes - markdown - file - generator.!")
+    lang = get_locale()
+    if lang is None:
+        lang = set_locale()
 
-    book_title = input("Enter booktitle: ")
-    author_name = input("Enter authorname: ")
+
+
+    print(f"{NOTES_TRANSLATION}.md {_('generator')}!")
+
+    book_title = input(_("Enter book title: "))
+    author_name = input(_("Enter author name: "))
 
     book_sections = get_sections()
 
@@ -69,4 +105,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+ #
 
